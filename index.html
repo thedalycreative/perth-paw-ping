@@ -381,7 +381,13 @@
 </head>
 
 <body>
-	<!-- Navigation -->
+	<!-- ============================================================
+	     NAVIGATION
+	     Fixed top bar with logo, desktop anchor links to each section,
+	     and a "Shop Now" CTA. Gains a blurred cream background + shadow
+	     once the page is scrolled past 50px (see navbar script below).
+	     Collapses to a hamburger button on mobile (< md breakpoint).
+	     ============================================================ -->
 	<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="flex items-center justify-between h-20">
@@ -429,7 +435,13 @@
 		</div>
 	</nav>
 
-	<!-- Mobile Menu -->
+	<!-- ============================================================
+	     MOBILE MENU (off-canvas)
+	     Slide-in drawer from the right with the same nav links as the
+	     desktop bar, plus a dimmed overlay behind it. Opened by the
+	     hamburger button, closed by the X button, the overlay, or
+	     tapping any link (handled in the script at the bottom).
+	     ============================================================ -->
 	<div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-80 h-full bg-cream z-50 shadow-2xl p-8 pt-24">
 		<button id="closeMenu"
 			class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-sand">
@@ -455,7 +467,15 @@
 	</div>
 	<div id="menuOverlay" class="fixed inset-0 bg-black/30 z-40 hidden"></div>
 
-	<!-- Hero Section -->
+	<!-- ============================================================
+	     HERO SECTION
+	     Full-height opening view. Left column: "Find My" eyebrow badge,
+	     headline, subcopy, two CTAs (Explore Trackers / See How It
+	     Works) and trust badges (pet avatars + star rating). Right
+	     column: animated phone mockup showing a live tracking map,
+	     with a floating QR-tag card and Apple Find My badge.
+	     Decorated with blurred blobs and pulsing paw prints.
+	     ============================================================ -->
 	<section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
 		<!-- Background elements -->
 		<div class="absolute top-20 right-0 w-96 h-96 bg-coral/5 blob"></div>
@@ -706,7 +726,13 @@
 		</div>
 	</section>
 
-	<!-- Stats Bar -->
+	<!-- ============================================================
+	     STATS BAR
+	     Dark full-width strip with four key metrics (pets protected,
+	     reunion rate, star rating, live tracking). Each stat fades in
+	     on scroll via the .reveal IntersectionObserver, staggered with
+	     inline transition-delay values.
+	     ============================================================ -->
 	<section class="py-12 bg-bark relative overflow-hidden">
 		<div class="absolute inset-0 bg-gradient-to-r from-coral/10 to-sage/10"></div>
 		<div class="max-w-7xl mx-auto px-6 lg:px-8 relative">
@@ -732,7 +758,13 @@
 		</div>
 	</section>
 
-	<!-- Features Section -->
+	<!-- ============================================================
+	     FEATURES SECTION (#features)
+	     "Why PawPing" — 3x2 grid of feature cards (QR tags, Apple
+	     Find My, escape alerts, waterproofing, battery life,
+	     personalisation). Cards lift on hover and their icons wiggle
+	     (.feature-card / .feature-icon styles in the head).
+	     ============================================================ -->
 	<section id="features" class="py-24 lg:py-32 relative">
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="text-center max-w-2xl mx-auto mb-16 reveal">
@@ -836,7 +868,14 @@
 		</div>
 	</section>
 
-	<!-- Products Section -->
+	<!-- ============================================================
+	     PRODUCTS SECTION (#products)
+	     Dark showcase of the three product cards — Classic Tag
+	     (POPULAR), Smart Tag Pro (BEST VALUE, highlighted border) and
+	     Collar Edition — each with product image, description,
+	     was/now pricing and an Add to Cart button. Images live in
+	     images/. This is the target of the "Shop Now" nav CTA.
+	     ============================================================ -->
 	<section id="products" class="py-24 lg:py-32 bg-bark relative overflow-hidden">
 		<div class="absolute top-0 right-0 w-96 h-96 bg-coral/5 blob"></div>
 		<div class="absolute bottom-0 left-0 w-80 h-80 bg-sage/5 blob" style="animation-delay: -2s;"></div>
@@ -928,7 +967,13 @@
 		</div>
 	</section>
 
-	<!-- How It Works -->
+	<!-- ============================================================
+	     HOW IT WORKS (#how-it-works)
+	     Three numbered steps — Order & Personalise, Connect & Attach,
+	     Track & Relax — laid out as a row of tilted icon tiles joined
+	     by a gradient connecting line on desktop. Each step reveals on
+	     scroll with a staggered delay.
+	     ============================================================ -->
 	<section id="how-it-works" class="py-24 lg:py-32 relative overflow-hidden">
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="text-center max-w-2xl mx-auto mb-20 reveal">
@@ -1008,7 +1053,13 @@
 		</div>
 	</section>
 
-	<!-- Testimonials -->
+	<!-- ============================================================
+	     TESTIMONIALS (#testimonials)
+	     "Happy Tails" — three five-star review cards from pet parents
+	     (Perth, Melbourne, Sydney), each with quote, avatar emoji and
+	     attribution. Cards scale slightly on hover. Linked from the
+	     "Reviews" nav item.
+	     ============================================================ -->
 	<section id="testimonials" class="py-24 lg:py-32 bg-sand/50 relative">
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="text-center max-w-2xl mx-auto mb-16 reveal">
@@ -1131,7 +1182,14 @@
 		</div>
 	</section>
 
-	<!-- Pricing Section -->
+	<!-- ============================================================
+	     PRICING SECTION (#pricing)
+	     "No subscriptions. Ever." — three one-time-payment plans that
+	     mirror the product cards: Classic Tag $39.95, Smart Tag Pro
+	     $69.95 (featured, dark card raised above the others with a
+	     MOST POPULAR ribbon) and Collar Edition $89.95. Each plan has
+	     a feature checklist and a Choose CTA.
+	     ============================================================ -->
 	<section id="pricing" class="py-24 lg:py-32 relative">
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="text-center max-w-2xl mx-auto mb-16 reveal">
@@ -1277,7 +1335,13 @@
 		</div>
 	</section>
 
-	<!-- Partners Section -->
+	<!-- ============================================================
+	     PARTNERS SECTION (#partners)
+	     "Our Community" — spotlight card for Pawfection, the official
+	     affiliate dog-care service run by George Andrew in Fremantle.
+	     Includes brand mark, description and a CTA linking out to
+	     pawfection.html. Linked from the "Partners" nav item.
+	     ============================================================ -->
 	<section id="partners" class="py-24 lg:py-32 bg-cream relative overflow-hidden">
 		<!-- Background decoration -->
 		<div class="absolute top-0 left-1/4 w-64 h-64 bg-sage/5 rounded-full blur-3xl"></div>
@@ -1346,7 +1410,14 @@
 		</div>
 	</section>
 
-	<!-- CTA Section -->
+	<!-- ============================================================
+	     CTA SECTION (#contact)
+	     Final conversion push on a dark gradient background: headline,
+	     "Shop All Trackers" button back to #products, a mailto contact
+	     button, and a row of trust points (free AU shipping, 30-day
+	     returns, 2-year warranty). Target of the "Shop Now" / Contact
+	     links throughout the page.
+	     ============================================================ -->
 	<section id="contact"
 		class="py-24 lg:py-32 bg-gradient-to-br from-bark via-charcoal to-bark relative overflow-hidden">
 		<div class="absolute top-0 left-0 w-full h-full">
@@ -1400,7 +1471,12 @@
 		</div>
 	</section>
 
-	<!-- Footer -->
+	<!-- ============================================================
+	     FOOTER
+	     Four-column dark footer: brand blurb, Products / Support /
+	     Connect link lists (currently placeholder "#" links), plus a
+	     bottom bar with copyright and Privacy / Terms links.
+	     ============================================================ -->
 	<footer class="bg-bark py-16">
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="grid md:grid-cols-4 gap-12 mb-12">
@@ -1469,6 +1545,13 @@
 		</div>
 	</footer>
 
+	<!-- ============================================================
+	     PAGE SCRIPTS
+	     All interactive behaviour: navbar background on scroll,
+	     mobile menu open/close, IntersectionObserver-driven .reveal
+	     animations, hero load-in animation, and smooth scrolling for
+	     in-page anchor links.
+	     ============================================================ -->
 	<script>
 		// Navbar scroll effect
 		const navbar = document.getElementById('navbar');
