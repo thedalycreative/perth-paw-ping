@@ -16,6 +16,7 @@
 	<script>/* paint the intro curtain before first frame — see assets/motion.css */!function(d){d.classList.add('js');try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&(!sessionStorage.getItem('pp-seen')||sessionStorage.getItem('pp-nav')))d.classList.add('pp-cover')}catch(e){}}(document.documentElement)</script>
 
 	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link
@@ -388,6 +389,121 @@
 			transform: translateX(0);
 		}
 	
+		/* ---------- Hero phone: live OpenStreetMap ---------- */
+		.phone-map {
+			position: absolute;
+			inset: 0;
+			overflow: hidden;
+			background: #e8e4d8;
+		}
+
+		.phone-map-grid {
+			position: absolute;
+			width: 768px;
+			height: 1024px;
+			/* pin (447, 427 in tile space) sits at 55% / 46% of the screen */
+			left: calc(55% - 447px);
+			top: calc(46% - 427px);
+			animation: map-drift 18s ease-in-out infinite alternate;
+		}
+
+		@keyframes map-drift {
+			from { translate: 10px 8px; }
+			to { translate: -12px -10px; }
+		}
+
+		.phone-map-tiles img {
+			position: absolute;
+			width: 256px;
+			height: 256px;
+			max-width: none;
+			user-select: none;
+		}
+
+		.phone-map-tiles {
+			position: absolute;
+			inset: 0;
+			/* soften OSM's default colours toward the PawPing palette */
+			filter: saturate(0.7) sepia(0.18) brightness(1.04) contrast(0.95);
+		}
+
+		.phone-map-route {
+			position: absolute;
+			inset: 0;
+			width: 768px;
+			height: 1024px;
+			overflow: visible;
+		}
+
+		.phone-map-route path {
+			fill: none;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.route-glow {
+			stroke: rgba(255, 107, 74, 0.25);
+			stroke-width: 14;
+		}
+
+		.route-line {
+			stroke: #FF6B4A;
+			stroke-width: 5;
+			stroke-dasharray: 2 12;
+			animation: route-march 1.2s linear infinite;
+		}
+
+		@keyframes route-march {
+			to { stroke-dashoffset: -14; }
+		}
+
+		.route-start {
+			fill: #fff;
+			stroke: #7FB685;
+			stroke-width: 4;
+		}
+
+		.phone-map-pin {
+			position: absolute;
+			left: 447px;
+			top: 427px;
+			width: 0;
+			height: 0;
+		}
+
+		.phone-map-pin .ping-ring {
+			width: 64px;
+			height: 64px;
+			left: -32px;
+			top: -32px;
+		}
+
+		.phone-map-pin .pin-dot {
+			position: absolute;
+			left: -20px;
+			top: -20px;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: #FF6B4A;
+			display: grid;
+			place-items: center;
+			box-shadow: 0 0 0 4px #fff, 0 8px 20px rgba(255, 107, 74, 0.5);
+		}
+
+		.phone-map-credit {
+			position: absolute;
+			top: 2.6rem;
+			right: 1rem;
+			z-index: 5;
+			font-size: 9px;
+			line-height: 1;
+			padding: 3px 6px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.85);
+			color: #4A4A5A;
+		}
+
 		/* Shared motion layer colours */
 		:root {
 			--pp-accent: #FF6B4A;
@@ -628,43 +744,48 @@
 						<!-- Phone mockup -->
 						<div class="relative bg-charcoal rounded-[3rem] p-3 shadow-2xl shadow-bark/20">
 							<div class="bg-bark rounded-[2.5rem] overflow-hidden aspect-[9/16] relative">
-								<!-- Map background -->
-								<div class="absolute inset-0 bg-gradient-to-br from-sage/30 via-cream to-sand">
-									<!-- Map grid lines -->
-									<svg class="absolute inset-0 w-full h-full opacity-20"
-										xmlns="http://www.w3.org/2000/svg">
-										<defs>
-											<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-												<path d="M 40 0 L 0 0 0 40" fill="none" stroke="#7FB685"
-													stroke-width="0.5" />
-											</pattern>
-										</defs>
-										<rect width="100%" height="100%" fill="url(#grid)" />
-									</svg>
-									<!-- Roads -->
-									<div class="absolute top-1/3 left-0 right-0 h-2 bg-white/40 rounded"></div>
-									<div class="absolute top-0 bottom-0 left-1/4 w-2 bg-white/30 rounded"></div>
-									<div
-										class="absolute top-0 bottom-0 right-1/3 w-1.5 bg-white/25 rounded transform rotate-12">
-									</div>
-								</div>
-
-								<!-- Location pin -->
-								<div class="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-									<div class="relative">
-										<div class="ping-ring absolute inset-0 w-16 h-16 -m-3"
-											style="animation-delay: 0s;"></div>
-										<div class="ping-ring absolute inset-0 w-16 h-16 -m-3"
-											style="animation-delay: 0.7s;"></div>
-										<div
-											class="w-10 h-10 bg-coral rounded-full flex items-center justify-center shadow-lg shadow-coral/40 animate-float">
-											<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-												<path
-													d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z" />
-											</svg>
+								<!-- Live map: real OpenStreetMap tiles of Kings Park, Perth
+								     (zoom 16, 3×4 tiles = 768×1024px). The route SVG and pin use the
+								     same 768×1024 coordinate space so they sit on Fraser Avenue. -->
+								<div class="phone-map" aria-hidden="true">
+									<div class="phone-map-grid">
+										<div class="phone-map-tiles">
+										<img src="https://tile.openstreetmap.org/16/53855/38912.png" alt="" width="256" height="256" style="left:0px;top:0px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53856/38912.png" alt="" width="256" height="256" style="left:256px;top:0px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53857/38912.png" alt="" width="256" height="256" style="left:512px;top:0px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53855/38913.png" alt="" width="256" height="256" style="left:0px;top:256px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53856/38913.png" alt="" width="256" height="256" style="left:256px;top:256px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53857/38913.png" alt="" width="256" height="256" style="left:512px;top:256px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53855/38914.png" alt="" width="256" height="256" style="left:0px;top:512px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53856/38914.png" alt="" width="256" height="256" style="left:256px;top:512px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53857/38914.png" alt="" width="256" height="256" style="left:512px;top:512px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53855/38915.png" alt="" width="256" height="256" style="left:0px;top:768px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53856/38915.png" alt="" width="256" height="256" style="left:256px;top:768px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53857/38915.png" alt="" width="256" height="256" style="left:512px;top:768px" referrerpolicy="strict-origin-when-cross-origin">
+										</div>
+										<!-- Buddy's walk: Malcolm St, down Fraser Ave to the lookout -->
+										<svg class="phone-map-route" viewBox="0 0 768 1024">
+											<path class="route-glow" d="M466 98 C464 120 463 140 461 175 S455 260 452 320 S448 390 447 427" />
+											<path class="route-line" d="M466 98 C464 120 463 140 461 175 S455 260 452 320 S448 390 447 427" />
+											<circle cx="466" cy="98" r="7" class="route-start" />
+										</svg>
+										<!-- Live pin -->
+										<div class="phone-map-pin">
+											<span class="ping-ring"></span>
+											<span class="ping-ring" style="animation-delay: 0.7s;"></span>
+											<div class="pin-dot animate-float">
+												<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+													<path
+														d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z" />
+												</svg>
+											</div>
 										</div>
 									</div>
+									<!-- soft vignette so the UI reads over the map -->
+									<div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-bark/25 via-transparent to-bark/30"></div>
 								</div>
+								<a class="phone-map-credit" href="https://www.openstreetmap.org/copyright" target="_blank"
+									rel="noopener">© OpenStreetMap</a>
 
 								<!-- Bottom card overlay -->
 								<div
@@ -677,7 +798,7 @@
 											<h4 class="font-display font-bold text-bark text-lg">Buddy</h4>
 											<p class="text-sm text-sage-dark font-medium flex items-center gap-1">
 												<span class="w-1.5 h-1.5 bg-sage rounded-full"></span>
-												Active • 2 min ago
+												Kings Park • 2 min ago
 											</p>
 										</div>
 										<div class="ml-auto">
