@@ -5,8 +5,18 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>PawPing — Never Lose Sight of Your Best Friend</title>
-	<link rel="icon" type="image/png" href="images/logo-paw.png" />
+	<meta name="description" content="Personalised QR pet tags with Apple Find My tracking. Made for Perth pets — one scan tells a finder how to get them home.">
+	<meta name="theme-color" content="#2C1810">
+	<meta property="og:title" content="PawPing — Never Lose Sight of Your Best Friend">
+	<meta property="og:description" content="Personalised QR pet tags with Apple Find My tracking.">
+	<meta property="og:image" content="images/og-pawping.jpg">
+	<meta property="og:type" content="website">
+	<link rel="icon" type="image/png" href="images/favicon-64.png" />
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+	<script>/* paint the intro curtain before first frame — see assets/motion.css */!function(d){d.classList.add('js');try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&(!sessionStorage.getItem('pp-seen')||sessionStorage.getItem('pp-nav')))d.classList.add('pp-cover')}catch(e){}}(document.documentElement)</script>
+
 	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link
@@ -297,13 +307,14 @@
 		}
 
 		.product-card:hover {
-			transform: translateY(-6px) scale(1.02);
-			box-shadow: 0 25px 50px rgba(44, 24, 16, 0.12);
+			box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
 		}
 
 		.product-card:hover .product-tag-icon {
-			animation: wiggle 0.6s ease infinite;
+			scale: 1.06;
 		}
+
+
 
 		/* QR code scanner line */
 		@keyframes scan {
@@ -377,7 +388,144 @@
 		.mobile-menu.open {
 			transform: translateX(0);
 		}
+	
+		/* ---------- Hero phone: live OpenStreetMap ---------- */
+		.phone-map {
+			position: absolute;
+			inset: 0;
+			overflow: hidden;
+			background: #e8e4d8;
+		}
+
+		.phone-map-grid {
+			position: absolute;
+			width: 768px;
+			height: 1024px;
+			/* pin (447, 427 in tile space) sits at 55% / 46% of the screen */
+			left: calc(55% - 447px);
+			top: calc(46% - 427px);
+			animation: map-drift 18s ease-in-out infinite alternate;
+		}
+
+		@keyframes map-drift {
+			from { translate: 10px 8px; }
+			to { translate: -12px -10px; }
+		}
+
+		.phone-map-tiles img {
+			position: absolute;
+			width: 256px;
+			height: 256px;
+			max-width: none;
+			user-select: none;
+		}
+
+		.phone-map-tiles {
+			position: absolute;
+			inset: 0;
+			/* soften OSM's default colours toward the PawPing palette */
+			filter: saturate(0.7) sepia(0.18) brightness(1.04) contrast(0.95);
+		}
+
+		.phone-map-route {
+			position: absolute;
+			inset: 0;
+			width: 768px;
+			height: 1024px;
+			overflow: visible;
+		}
+
+		.phone-map-route path {
+			fill: none;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.route-glow {
+			stroke: rgba(255, 107, 74, 0.25);
+			stroke-width: 14;
+		}
+
+		.route-line {
+			stroke: #FF6B4A;
+			stroke-width: 5;
+			stroke-dasharray: 2 12;
+			animation: route-march 1.2s linear infinite;
+		}
+
+		@keyframes route-march {
+			to { stroke-dashoffset: -14; }
+		}
+
+		.route-start {
+			fill: #fff;
+			stroke: #7FB685;
+			stroke-width: 4;
+		}
+
+		.phone-map-pin {
+			position: absolute;
+			left: 447px;
+			top: 427px;
+			width: 0;
+			height: 0;
+		}
+
+		.phone-map-pin .ping-ring {
+			width: 64px;
+			height: 64px;
+			left: -32px;
+			top: -32px;
+		}
+
+		.phone-map-pin .pin-dot {
+			position: absolute;
+			left: -20px;
+			top: -20px;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: #FF6B4A;
+			display: grid;
+			place-items: center;
+			box-shadow: 0 0 0 4px #fff, 0 8px 20px rgba(255, 107, 74, 0.5);
+		}
+
+		.phone-map-credit {
+			position: absolute;
+			top: 2.6rem;
+			right: 1rem;
+			z-index: 5;
+			font-size: 9px;
+			line-height: 1;
+			padding: 3px 6px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.85);
+			color: #4A4A5A;
+		}
+
+		/* Shared motion layer colours */
+		:root {
+			--pp-accent: #FF6B4A;
+			--pp-ink: #2C1810;
+			--pp-paper: #FFF8F0;
+		}
+
+		/* Hold the hero load-in until the intro curtain lifts */
+		html.pp-cover .animate-fade-up,
+		html.pp-cover .animate-scale-in,
+		html.pp-cover .animate-fade-in {
+			animation-play-state: paused;
+		}
+
+		/* Bold marquee band under the hero */
+		.paw-band {
+			transform: rotate(-1.5deg);
+			margin: -1.5rem -2rem 0;
+		}
 	</style>
+	<link rel="stylesheet" href="assets/motion.css">
+	<script src="assets/motion.js" defer></script>
 </head>
 
 <body>
@@ -416,7 +564,7 @@
 						class="text-slate font-medium hover:text-coral transition-colors duration-300">Partners</a>
 					<a href="#testimonials"
 						class="text-slate font-medium hover:text-coral transition-colors duration-300">Reviews</a>
-					<a href="#contact"
+					<a data-boop href="#contact"
 						class="bg-coral text-white px-6 py-2.5 rounded-full font-semibold btn-shimmer hover:bg-coral-dark">
 						Shop Now
 					</a>
@@ -460,7 +608,7 @@
 				class="text-lg font-medium text-bark hover:text-coral transition-colors mobile-link">Partners</a>
 			<a href="#testimonials"
 				class="text-lg font-medium text-bark hover:text-coral transition-colors mobile-link">Reviews</a>
-			<a href="#contact"
+			<a data-boop href="#contact"
 				class="bg-coral text-white px-6 py-3 rounded-full font-semibold text-center btn-shimmer mt-4">Shop
 				Now</a>
 		</div>
@@ -519,8 +667,8 @@
 							Works with Apple Find My
 						</div>
 					</div>
-					<h1
-						class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-bark leading-[1.1] mb-6 animate-fade-up opacity-0-start delay-100">
+					<h1 data-split
+						class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-bark leading-[1.1] mb-6">
 						Know Where They<br>
 						<span class="text-coral italic">Are. Always.</span>
 					</h1>
@@ -530,14 +678,14 @@
 						everything they need to reunite you with your furry family member.
 					</p>
 					<div class="flex flex-wrap gap-4 mb-10 animate-fade-up opacity-0-start delay-300">
-						<a href="#products"
+						<a href="#products" data-magnetic data-boop
 							class="bg-coral text-white px-8 py-4 rounded-full font-semibold text-lg btn-shimmer inline-flex items-center gap-2">
 							Explore Trackers
 							<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
 							</svg>
 						</a>
-						<a href="#how-it-works"
+						<a href="#how-it-works" data-magnetic
 							class="bg-bark/5 text-bark px-8 py-4 rounded-full font-semibold text-lg hover:bg-bark/10 transition-colors inline-flex items-center gap-2">
 							<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 								<path stroke-linecap="round" stroke-linejoin="round"
@@ -592,47 +740,52 @@
 
 				<!-- Right — Hero visual -->
 				<div class="relative animate-scale-in opacity-0-start delay-300">
-					<div class="relative mx-auto w-full max-w-md">
+					<div class="relative mx-auto w-full max-w-md" data-parallax="0.08">
 						<!-- Phone mockup -->
 						<div class="relative bg-charcoal rounded-[3rem] p-3 shadow-2xl shadow-bark/20">
 							<div class="bg-bark rounded-[2.5rem] overflow-hidden aspect-[9/16] relative">
-								<!-- Map background -->
-								<div class="absolute inset-0 bg-gradient-to-br from-sage/30 via-cream to-sand">
-									<!-- Map grid lines -->
-									<svg class="absolute inset-0 w-full h-full opacity-20"
-										xmlns="http://www.w3.org/2000/svg">
-										<defs>
-											<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-												<path d="M 40 0 L 0 0 0 40" fill="none" stroke="#7FB685"
-													stroke-width="0.5" />
-											</pattern>
-										</defs>
-										<rect width="100%" height="100%" fill="url(#grid)" />
-									</svg>
-									<!-- Roads -->
-									<div class="absolute top-1/3 left-0 right-0 h-2 bg-white/40 rounded"></div>
-									<div class="absolute top-0 bottom-0 left-1/4 w-2 bg-white/30 rounded"></div>
-									<div
-										class="absolute top-0 bottom-0 right-1/3 w-1.5 bg-white/25 rounded transform rotate-12">
-									</div>
-								</div>
-
-								<!-- Location pin -->
-								<div class="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-									<div class="relative">
-										<div class="ping-ring absolute inset-0 w-16 h-16 -m-3"
-											style="animation-delay: 0s;"></div>
-										<div class="ping-ring absolute inset-0 w-16 h-16 -m-3"
-											style="animation-delay: 0.7s;"></div>
-										<div
-											class="w-10 h-10 bg-coral rounded-full flex items-center justify-center shadow-lg shadow-coral/40 animate-float">
-											<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-												<path
-													d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z" />
-											</svg>
+								<!-- Live map: real OpenStreetMap tiles of Kings Park, Perth
+								     (zoom 16, 3×4 tiles = 768×1024px). The route SVG and pin use the
+								     same 768×1024 coordinate space so they sit on Fraser Avenue. -->
+								<div class="phone-map" aria-hidden="true">
+									<div class="phone-map-grid">
+										<div class="phone-map-tiles">
+										<img src="https://tile.openstreetmap.org/16/53855/38912.png" alt="" width="256" height="256" style="left:0px;top:0px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53856/38912.png" alt="" width="256" height="256" style="left:256px;top:0px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53857/38912.png" alt="" width="256" height="256" style="left:512px;top:0px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53855/38913.png" alt="" width="256" height="256" style="left:0px;top:256px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53856/38913.png" alt="" width="256" height="256" style="left:256px;top:256px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53857/38913.png" alt="" width="256" height="256" style="left:512px;top:256px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53855/38914.png" alt="" width="256" height="256" style="left:0px;top:512px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53856/38914.png" alt="" width="256" height="256" style="left:256px;top:512px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53857/38914.png" alt="" width="256" height="256" style="left:512px;top:512px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53855/38915.png" alt="" width="256" height="256" style="left:0px;top:768px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53856/38915.png" alt="" width="256" height="256" style="left:256px;top:768px" referrerpolicy="strict-origin-when-cross-origin">
+										<img src="https://tile.openstreetmap.org/16/53857/38915.png" alt="" width="256" height="256" style="left:512px;top:768px" referrerpolicy="strict-origin-when-cross-origin">
+										</div>
+										<!-- Buddy's walk: Malcolm St, down Fraser Ave to the lookout -->
+										<svg class="phone-map-route" viewBox="0 0 768 1024">
+											<path class="route-glow" d="M466 98 C464 120 463 140 461 175 S455 260 452 320 S448 390 447 427" />
+											<path class="route-line" d="M466 98 C464 120 463 140 461 175 S455 260 452 320 S448 390 447 427" />
+											<circle cx="466" cy="98" r="7" class="route-start" />
+										</svg>
+										<!-- Live pin -->
+										<div class="phone-map-pin">
+											<span class="ping-ring"></span>
+											<span class="ping-ring" style="animation-delay: 0.7s;"></span>
+											<div class="pin-dot animate-float">
+												<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+													<path
+														d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z" />
+												</svg>
+											</div>
 										</div>
 									</div>
+									<!-- soft vignette so the UI reads over the map -->
+									<div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-bark/25 via-transparent to-bark/30"></div>
 								</div>
+								<a class="phone-map-credit" href="https://www.openstreetmap.org/copyright" target="_blank"
+									rel="noopener">© OpenStreetMap</a>
 
 								<!-- Bottom card overlay -->
 								<div
@@ -645,7 +798,7 @@
 											<h4 class="font-display font-bold text-bark text-lg">Buddy</h4>
 											<p class="text-sm text-sage-dark font-medium flex items-center gap-1">
 												<span class="w-1.5 h-1.5 bg-sage rounded-full"></span>
-												Active • 2 min ago
+												Kings Park • 2 min ago
 											</p>
 										</div>
 										<div class="ml-auto">
@@ -727,6 +880,26 @@
 	</section>
 
 	<!-- ============================================================
+	     PAW BAND (marquee)
+	     Slightly rotated coral strip with the PawPing promise scrolling
+	     past. Built with the shared .pp-marquee component — motion.js
+	     clones the items so the loop is seamless; pauses on hover.
+	     ============================================================ -->
+	<div class="relative z-20 overflow-hidden pb-6" aria-label="PawPing at a glance">
+		<div class="paw-band bg-coral py-5 shadow-xl shadow-coral/20 pp-marquee" data-speed="38">
+			<div class="pp-marquee-track">
+				<span class="flex items-center font-display italic text-2xl lg:text-3xl text-white whitespace-nowrap">Scan the tag<svg class="w-6 h-6 mx-8 shrink-0 text-bark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z"/></svg></span>
+				<span class="flex items-center font-display italic text-2xl lg:text-3xl text-white whitespace-nowrap">Ping on Find My<svg class="w-6 h-6 mx-8 shrink-0 text-bark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z"/></svg></span>
+				<span class="flex items-center font-display italic text-2xl lg:text-3xl text-white whitespace-nowrap">Get the alert<svg class="w-6 h-6 mx-8 shrink-0 text-bark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z"/></svg></span>
+				<span class="flex items-center font-display italic text-2xl lg:text-3xl text-white whitespace-nowrap">Bring them home<svg class="w-6 h-6 mx-8 shrink-0 text-bark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z"/></svg></span>
+				<span class="flex items-center font-display italic text-2xl lg:text-3xl text-white whitespace-nowrap">Waterproof to IP68<svg class="w-6 h-6 mx-8 shrink-0 text-bark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z"/></svg></span>
+				<span class="flex items-center font-display italic text-2xl lg:text-3xl text-white whitespace-nowrap">A year per battery<svg class="w-6 h-6 mx-8 shrink-0 text-bark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z"/></svg></span>
+				<span class="flex items-center font-display italic text-2xl lg:text-3xl text-white whitespace-nowrap">No subscription, ever<svg class="w-6 h-6 mx-8 shrink-0 text-bark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15.5c-2.2 0-4 1.3-4 3s1.8 3 4 3 4-1.3 4-3-1.8-3-4-3zm-4.5-3a2 2 0 100-4 2 2 0 000 4zm3-4.5a2 2 0 100-4 2 2 0 000 4zm6 4.5a2 2 0 100-4 2 2 0 000 4zm-3-4.5a2 2 0 100-4 2 2 0 000 4z"/></svg></span>
+			</div>
+		</div>
+	</div>
+
+	<!-- ============================================================
 	     STATS BAR
 	     Dark full-width strip with four key metrics (pets protected,
 	     reunion rate, star rating, live tracking). Each stat fades in
@@ -738,16 +911,15 @@
 		<div class="max-w-7xl mx-auto px-6 lg:px-8 relative">
 			<div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 				<div class="reveal">
-					<p class="font-display text-4xl lg:text-5xl font-bold text-white mb-1" data-count="10000">10,000+
-					</p>
+					<p class="font-display text-4xl lg:text-5xl font-bold text-white mb-1" data-count="10000" data-suffix="+">10,000+</p>
 					<p class="text-cream/60 font-medium text-sm">Pets Protected</p>
 				</div>
 				<div class="reveal" style="transition-delay: 0.1s;">
-					<p class="font-display text-4xl lg:text-5xl font-bold text-coral mb-1">98%</p>
+					<p class="font-display text-4xl lg:text-5xl font-bold text-coral mb-1" data-count="98" data-suffix="%">98%</p>
 					<p class="text-cream/60 font-medium text-sm">Reunion Rate</p>
 				</div>
 				<div class="reveal" style="transition-delay: 0.2s;">
-					<p class="font-display text-4xl lg:text-5xl font-bold text-white mb-1">4.9</p>
+					<p class="font-display text-4xl lg:text-5xl font-bold text-white mb-1" data-count="4.9" data-decimals="1">4.9</p>
 					<p class="text-cream/60 font-medium text-sm">Star Rating</p>
 				</div>
 				<div class="reveal" style="transition-delay: 0.3s;">
@@ -769,7 +941,7 @@
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="text-center max-w-2xl mx-auto mb-16 reveal">
 				<span class="text-coral font-semibold text-sm uppercase tracking-wider">Why PawPing</span>
-				<h2 class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">Two layers of
+				<h2 data-split class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">Two layers of
 					protection.<br><span class="text-coral italic">One little tag.</span></h2>
 				<p class="text-slate text-lg">Combining personalised QR code identification with real-time Apple Find My
 					tracking — because your pet deserves more than a name on a tag.</p>
@@ -883,7 +1055,7 @@
 		<div class="max-w-7xl mx-auto px-6 lg:px-8 relative">
 			<div class="text-center max-w-2xl mx-auto mb-16 reveal">
 				<span class="text-coral font-semibold text-sm uppercase tracking-wider">Our Products</span>
-				<h2 class="font-display text-4xl lg:text-5xl font-bold text-white mt-3 mb-5">Choose Your Pet's<br><span
+				<h2 data-split class="font-display text-4xl lg:text-5xl font-bold text-white mt-3 mb-5">Choose Your Pet's<br><span
 						class="text-coral italic">Perfect Tag</span></h2>
 				<p class="text-cream/60 text-lg">Every tag comes with a unique QR profile and Apple Find My tracker.
 					Pick the style that suits your pet's personality.</p>
@@ -892,10 +1064,10 @@
 			<div class="grid md:grid-cols-3 gap-8">
 				<!-- Product 1 -->
 				<div
-					class="product-card bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden reveal">
+					data-tilt="7" class="product-card bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden reveal">
 					<div class="aspect-square bg-gradient-to-br from-coral/20 to-sand/10 overflow-hidden relative">
-						<img src="images/classic_tag.png" alt="Classic Tag"
-							class="w-full h-full object-cover product-tag-icon transition-transform duration-500">
+						<img src="images/classic_tag.webp" alt="Classic Tag pet tag" width="640" height="640" loading="lazy" decoding="async"
+							class="w-full h-full object-cover product-tag-icon transition-[scale] duration-700">
 						<div
 							class="absolute top-4 right-4 bg-coral text-white text-xs font-bold px-3 py-1 rounded-full">
 							POPULAR</div>
@@ -909,7 +1081,7 @@
 								<span class="text-cream/40 text-sm line-through">$59.95</span>
 								<span class="text-coral font-display text-3xl font-bold ml-2">$39.95</span>
 							</div>
-							<button
+							<button data-boop
 								class="bg-coral text-white px-5 py-2.5 rounded-full text-sm font-semibold btn-shimmer">Add
 								to Cart</button>
 						</div>
@@ -917,11 +1089,11 @@
 				</div>
 
 				<!-- Product 2 -->
-				<div class="product-card bg-white/5 backdrop-blur-sm rounded-3xl border border-coral/30 overflow-hidden reveal"
+				<div data-tilt="7" class="product-card bg-white/5 backdrop-blur-sm rounded-3xl border border-coral/30 overflow-hidden reveal"
 					style="transition-delay: 0.1s;">
 					<div class="aspect-square bg-gradient-to-br from-sage/20 to-cream/10 overflow-hidden relative">
-						<img src="images/smart_tag_pro.png" alt="Smart Tag Pro"
-							class="w-full h-full object-cover product-tag-icon transition-transform duration-500">
+						<img src="images/smart_tag_pro.webp" alt="Smart Tag Pro pet tag" width="640" height="640" loading="lazy" decoding="async"
+							class="w-full h-full object-cover product-tag-icon transition-[scale] duration-700">
 						<div class="absolute top-4 right-4 bg-sage text-white text-xs font-bold px-3 py-1 rounded-full">
 							BEST VALUE</div>
 					</div>
@@ -934,7 +1106,7 @@
 								<span class="text-cream/40 text-sm line-through">$89.95</span>
 								<span class="text-coral font-display text-3xl font-bold ml-2">$69.95</span>
 							</div>
-							<button
+							<button data-boop
 								class="bg-coral text-white px-5 py-2.5 rounded-full text-sm font-semibold btn-shimmer">Add
 								to Cart</button>
 						</div>
@@ -942,11 +1114,11 @@
 				</div>
 
 				<!-- Product 3 -->
-				<div class="product-card bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden reveal"
+				<div data-tilt="7" class="product-card bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden reveal"
 					style="transition-delay: 0.2s;">
 					<div class="aspect-square bg-gradient-to-br from-bark/20 to-coral/10 overflow-hidden relative">
-						<img src="images/collar_edition.png" alt="Collar Edition"
-							class="w-full h-full object-cover product-tag-icon transition-transform duration-500">
+						<img src="images/collar_edition.webp" alt="Collar Edition pet tag" width="640" height="640" loading="lazy" decoding="async"
+							class="w-full h-full object-cover product-tag-icon transition-[scale] duration-700">
 					</div>
 					<div class="p-6">
 						<h3 class="font-display text-2xl font-bold text-white mb-2">Collar Edition</h3>
@@ -957,7 +1129,7 @@
 								<span class="text-cream/40 text-sm line-through">$109.95</span>
 								<span class="text-coral font-display text-3xl font-bold ml-2">$89.95</span>
 							</div>
-							<button
+							<button data-boop
 								class="bg-coral text-white px-5 py-2.5 rounded-full text-sm font-semibold btn-shimmer">Add
 								to Cart</button>
 						</div>
@@ -978,7 +1150,7 @@
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="text-center max-w-2xl mx-auto mb-20 reveal">
 				<span class="text-coral font-semibold text-sm uppercase tracking-wider">How It Works</span>
-				<h2 class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">Set up in<br><span
+				<h2 data-split class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">Set up in<br><span
 						class="text-coral italic">under 2 minutes.</span></h2>
 				<p class="text-slate text-lg">No tech wizardry required. If you can take a selfie, you can protect your
 					pet.</p>
@@ -1002,7 +1174,7 @@
 							</svg>
 						</div>
 						<div
-							class="absolute -top-3 -right-3 w-10 h-10 bg-coral text-white rounded-full flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-coral/30">
+							data-reveal="pop" class="absolute -top-3 -right-3 w-10 h-10 bg-coral text-white rounded-full flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-coral/30">
 							1</div>
 					</div>
 					<h3 class="font-display text-2xl font-bold text-bark mb-3">Order & Personalise</h3>
@@ -1022,7 +1194,7 @@
 							</svg>
 						</div>
 						<div
-							class="absolute -top-3 -right-3 w-10 h-10 bg-sage text-white rounded-full flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-sage/30">
+							data-reveal="pop" class="absolute -top-3 -right-3 w-10 h-10 bg-sage text-white rounded-full flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-sage/30">
 							2</div>
 					</div>
 					<h3 class="font-display text-2xl font-bold text-bark mb-3">Connect & Attach</h3>
@@ -1042,7 +1214,7 @@
 							</svg>
 						</div>
 						<div
-							class="absolute -top-3 -right-3 w-10 h-10 bg-coral text-white rounded-full flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-coral/30">
+							data-reveal="pop" class="absolute -top-3 -right-3 w-10 h-10 bg-coral text-white rounded-full flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-coral/30">
 							3</div>
 					</div>
 					<h3 class="font-display text-2xl font-bold text-bark mb-3">Track & Relax</h3>
@@ -1064,7 +1236,7 @@
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="text-center max-w-2xl mx-auto mb-16 reveal">
 				<span class="text-coral font-semibold text-sm uppercase tracking-wider">Happy Tails</span>
-				<h2 class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">Real stories from<br><span
+				<h2 data-split class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">Real stories from<br><span
 						class="text-coral italic">real pet parents.</span></h2>
 			</div>
 
@@ -1194,7 +1366,7 @@
 		<div class="max-w-7xl mx-auto px-6 lg:px-8">
 			<div class="text-center max-w-2xl mx-auto mb-16 reveal">
 				<span class="text-coral font-semibold text-sm uppercase tracking-wider">Simple Pricing</span>
-				<h2 class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">No subscriptions.<br><span
+				<h2 data-split class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">No subscriptions.<br><span
 						class="text-coral italic">Ever.</span></h2>
 				<p class="text-slate text-lg">One-time purchase. Lifetime QR profile. Apple Find My tracking included at
 					no extra cost — because protecting your pet shouldn't come with a monthly bill.</p>
@@ -1284,7 +1456,7 @@
 								<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
 							</svg>IP67 waterproof</li>
 					</ul>
-					<a href="#"
+					<a data-boop href="#"
 						class="block bg-coral text-white px-6 py-3 rounded-full font-semibold btn-shimmer">Choose
 						Pro</a>
 				</div>
@@ -1350,7 +1522,7 @@
 		<div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
 			<div class="text-center max-w-2xl mx-auto mb-16 reveal">
 				<span class="text-sage font-semibold text-sm uppercase tracking-wider">Our Community</span>
-				<h2 class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">Trusted Local<br /><span
+				<h2 data-split class="font-display text-4xl lg:text-5xl font-bold text-bark mt-3 mb-5">Trusted Local<br /><span
 						class="text-sage-dark italic">Partnerships</span></h2>
 				<p class="text-slate text-lg">We believe in a community-first approach to pet care. Meet the local
 					experts who share our passion for pet safety and happiness.</p>
@@ -1383,7 +1555,7 @@
 						<h4 class="font-display text-2xl font-bold text-bark mb-4">Premium Dog Services in Fremantle
 						</h4>
 						<p class="text-slate leading-relaxed mb-8">Pawfection, our premier partner run by retired
-							Claremont local **George Andrew**, offers calm, trust-centered dog care. From overnight
+							Claremont local <strong class="text-bark">George Andrew</strong>, offers calm, trust-centered dog care. From overnight
 							hosting to energetic coastal walks, George provides the "home away from home" experience
 							your best friend deserves.</p>
 						<div class="flex flex-wrap justify-center md:justify-start gap-4">
@@ -1428,13 +1600,13 @@
 		<div class="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
 			<div class="reveal">
 				<span class="text-coral font-semibold text-sm uppercase tracking-wider">Get Started Today</span>
-				<h2 class="font-display text-4xl lg:text-6xl font-bold text-white mt-4 mb-6">Give your pet the<br><span
+				<h2 data-split class="font-display text-4xl lg:text-6xl font-bold text-white mt-4 mb-6">Give your pet the<br><span
 						class="text-coral italic">peace of mind</span> they give you.</h2>
 				<p class="text-cream/60 text-lg mb-10 max-w-2xl mx-auto">Join thousands of Aussie pet parents who sleep
 					better knowing their furry family is protected by PawPing. Free shipping on all orders
 					Australia-wide.</p>
 				<div class="flex flex-wrap justify-center gap-4 mb-12">
-					<a href="#products"
+					<a data-boop data-magnetic href="#products"
 						class="bg-coral text-white px-10 py-4 rounded-full font-semibold text-lg btn-shimmer inline-flex items-center gap-3">
 						Shop All Trackers
 						<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -1611,16 +1783,8 @@
 			}, 100);
 		});
 
-		// Smooth scroll for anchor links
-		document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-			anchor.addEventListener('click', function (e) {
-				e.preventDefault();
-				const target = document.querySelector(this.getAttribute('href'));
-				if (target) {
-					target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-				}
-			});
-		});
+		// Smooth anchor scrolling is handled by CSS (scroll-behavior: smooth on <html>
+		// plus scroll-margin-top in assets/motion.css), so no JS is needed here.
 	</script>
 </body>
 

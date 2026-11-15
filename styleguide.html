@@ -1,10 +1,14 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<!--comment for test-->
 		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Dog Services Brand Kit</title>
-		<link rel="icon" type="image/png" href="images/logo-paw.png" />
+		<meta name="description" content="Logo, colour, type and voice guidelines for a Perth dog services brand." />
+		<meta name="theme-color" content="#3C6E71" />
+		<link rel="icon" type="image/png" href="images/favicon-64.png" />
+		<link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+		<script>/* paint the intro curtain before first frame — see assets/motion.css */!function(d){d.classList.add('js');try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&(!sessionStorage.getItem('pp-seen')||sessionStorage.getItem('pp-nav')))d.classList.add('pp-cover')}catch(e){}}(document.documentElement)</script>
 		<link
 			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Lato:wght@300;400;600&family=Playfair+Display:ital@1&display=swap"
 			rel="stylesheet"
@@ -18,6 +22,11 @@
 				--sun: #f4c95d;
 				--bg: #f5f1e6;
 				--text-dark: #2b2b2b;
+
+				/* Shared motion layer colours */
+				--pp-accent: #f4c95d;
+				--pp-ink: #3c6e71;
+				--pp-paper: #f5f1e6;
 			}
 
 			* {
@@ -371,19 +380,176 @@
 				color: #777;
 				text-align: center;
 			}
+
+			/* ---------- Motion polish ---------- */
+
+			/* Top bar linking back to the live sites */
+			.kit-nav {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem 1.25rem;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 2rem;
+				font-family: "Montserrat", system-ui, sans-serif;
+				font-size: 0.9rem;
+			}
+
+			.kit-nav-links {
+				display: flex;
+				gap: 1.25rem;
+			}
+
+			.kit-nav a {
+				color: var(--ocean);
+				text-decoration: none;
+				font-weight: 600;
+				border-bottom: 2px solid transparent;
+				transition: border-color 0.25s ease;
+			}
+
+			.kit-nav a:hover {
+				border-color: var(--sun);
+			}
+
+			/* Logo paw assembles itself: pad lands, then each toe drops in.
+			   Individual translate/scale keep the toes' own transforms intact. */
+			.paw-icon.assemble .paw-pad,
+			.paw-icon.assemble .paw-toe {
+				animation: toe-drop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+			}
+
+			.paw-icon.assemble .paw-pad { animation-delay: 0.9s; }
+			.paw-icon.assemble .toe-1 { animation-delay: 1.05s; }
+			.paw-icon.assemble .toe-2 { animation-delay: 1.15s; }
+			.paw-icon.assemble .toe-3 { animation-delay: 1.25s; }
+			.paw-icon.assemble .toe-4 { animation-delay: 1.35s; }
+
+			@keyframes toe-drop {
+				from {
+					opacity: 0;
+					translate: 0 -46px;
+					scale: 0.4;
+				}
+			}
+
+			.logo-preview:hover .paw-icon .paw-toe {
+				animation: toe-wiggle 0.5s ease;
+			}
+
+			.logo-preview:hover .paw-icon .toe-2 { animation-delay: 0.05s; }
+			.logo-preview:hover .paw-icon .toe-3 { animation-delay: 0.1s; }
+
+			@keyframes toe-wiggle {
+				50% {
+					translate: 0 -6px;
+				}
+			}
+
+			/* Swatches are click-to-copy */
+			.swatch {
+				cursor: copy;
+				transition:
+					translate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+					box-shadow 0.3s ease;
+			}
+
+			.swatch:hover,
+			.swatch:focus-visible {
+				translate: 0 -6px;
+				box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
+			}
+
+			.swatch:focus-visible {
+				outline: 3px solid var(--ocean);
+				outline-offset: 3px;
+			}
+
+			.swatch-color {
+				transition: height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+			}
+
+			.swatch:hover .swatch-color {
+				height: 76px;
+			}
+
+			.swatch-hex::after {
+				content: '  copy';
+				white-space: pre;
+				color: var(--ocean);
+				font-weight: 600;
+				opacity: 0;
+				transition: opacity 0.2s ease;
+			}
+
+			.swatch:hover .swatch-hex::after,
+			.swatch:focus-visible .swatch-hex::after {
+				opacity: 1;
+			}
+
+			.card {
+				transition: box-shadow 0.35s ease;
+			}
+
+			.card:hover {
+				box-shadow: 0 16px 36px rgba(0, 0, 0, 0.07);
+			}
+
+			.chip {
+				transition:
+					background-color 0.25s ease,
+					color 0.25s ease;
+			}
+
+			.chip:hover {
+				background: var(--ocean);
+				color: #fff;
+			}
+
+			/* h2 rule draws itself in when its section is revealed */
+			section h2 {
+				position: relative;
+				border-bottom-color: transparent;
+			}
+
+			section h2::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				bottom: -2px;
+				height: 2px;
+				width: 100%;
+				background: linear-gradient(90deg, var(--green), var(--ocean), var(--sun));
+				transform: scaleX(0);
+				transform-origin: left;
+				transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+			}
+
+			section.is-in h2::after {
+				transform: scaleX(1);
+			}
 		</style>
+		<link rel="stylesheet" href="assets/motion.css" />
+		<script src="assets/motion.js" defer></script>
 	</head>
 
 	<body>
 		<div class="page">
+			<nav class="kit-nav" aria-label="Perth Paws sites">
+				<span>Perth Paws brand kit</span>
+				<span class="kit-nav-links">
+					<a href="index.html">PawPing</a>
+					<a href="pawfection.html">Pawfection</a>
+				</span>
+			</nav>
 			<!-- HEADER / BRAND OVERVIEW -->
 			<header>
-				<h1>Dog Services Brand Kit</h1>
+				<h1 data-split>Dog Services Brand Kit</h1>
 				<p class="tagline">
 					Professional, nature‑driven care for dogs who love the outdoors.
 				</p>
 				<div class="logo-preview">
-					<div class="paw-icon">
+					<div class="paw-icon assemble">
 						<div class="paw-pad"></div>
 						<div class="paw-toe toe-1"></div>
 						<div class="paw-toe toe-2"></div>
@@ -407,7 +573,7 @@
 			</header>
 
 			<!-- LOGO SYSTEM -->
-			<section>
+			<section data-reveal="up">
 				<h2>Logo System</h2>
 				<div class="grid grid-2">
 					<div class="card">
@@ -452,7 +618,7 @@
 			</section>
 
 			<!-- COLOR PALETTE -->
-			<section>
+			<section data-reveal="up">
 				<h2>Color Palette</h2>
 				<p>
 					A balanced earthy mix that reflects nature, reliability, and warmth. Use
@@ -461,8 +627,8 @@
 				</p>
 				<div class="card">
 					<h3>Core Colors</h3>
-					<div class="swatches">
-						<div class="swatch">
+					<div class="swatches" data-stagger="pop" data-stagger-step="70">
+						<div class="swatch" role="button" tabindex="0" data-copy="#5A7D3D" aria-label="Copy Grass Green #5A7D3D">
 							<div class="swatch-color" style="background: var(--green)"></div>
 							<div class="swatch-meta">
 								<div class="swatch-name">Grass Green</div>
@@ -470,7 +636,7 @@
 								<div class="subtle">Nature, energy, outdoor walks</div>
 							</div>
 						</div>
-						<div class="swatch">
+						<div class="swatch" role="button" tabindex="0" data-copy="#CBAE86" aria-label="Copy Sand Brown #CBAE86">
 							<div class="swatch-color" style="background: var(--sand)"></div>
 							<div class="swatch-meta">
 								<div class="swatch-name">Sand Brown</div>
@@ -478,7 +644,7 @@
 								<div class="subtle">Neutral base, backgrounds</div>
 							</div>
 						</div>
-						<div class="swatch">
+						<div class="swatch" role="button" tabindex="0" data-copy="#8B5E3C" aria-label="Copy Warm Wood #8B5E3C">
 							<div class="swatch-color" style="background: var(--wood)"></div>
 							<div class="swatch-meta">
 								<div class="swatch-name">Warm Wood</div>
@@ -486,7 +652,7 @@
 								<div class="subtle">Primary text & logo pad</div>
 							</div>
 						</div>
-						<div class="swatch">
+						<div class="swatch" role="button" tabindex="0" data-copy="#3C6E71" aria-label="Copy Ocean Blue #3C6E71">
 							<div class="swatch-color" style="background: var(--ocean)"></div>
 							<div class="swatch-meta">
 								<div class="swatch-name">Ocean Blue</div>
@@ -494,7 +660,7 @@
 								<div class="subtle">Depth, trust, contrast</div>
 							</div>
 						</div>
-						<div class="swatch">
+						<div class="swatch" role="button" tabindex="0" data-copy="#F4C95D" aria-label="Copy Sunlight Gold #F4C95D">
 							<div class="swatch-color" style="background: var(--sun)"></div>
 							<div class="swatch-meta">
 								<div class="swatch-name">Sunlight Gold</div>
@@ -502,7 +668,7 @@
 								<div class="subtle">Calls‑to‑action, highlights</div>
 							</div>
 						</div>
-						<div class="swatch">
+						<div class="swatch" role="button" tabindex="0" data-copy="#F5F1E6" aria-label="Copy Soft Neutral #F5F1E6">
 							<div class="swatch-color" style="background: var(--bg)"></div>
 							<div class="swatch-meta">
 								<div class="swatch-name">Soft Neutral</div>
@@ -536,7 +702,7 @@
 			</section>
 
 			<!-- TYPOGRAPHY -->
-			<section>
+			<section data-reveal="up">
 				<h2>Typography</h2>
 				<p>
 					Typography is modern, clean, and slightly geometric to match the angular
@@ -595,12 +761,12 @@
 			</section>
 
 			<!-- BRAND PERSONALITY & VOICE -->
-			<section>
+			<section data-reveal="up">
 				<h2>Brand Personality & Voice</h2>
 				<div class="grid grid-2">
 					<div class="card">
 						<h3>Personality</h3>
-						<div class="chips">
+						<div class="chips" data-stagger="pop" data-stagger-step="60">
 							<span class="chip">Professional</span>
 							<span class="chip">Trustworthy</span>
 							<span class="chip">Outdoorsy</span>
@@ -636,7 +802,7 @@
 			</section>
 
 			<!-- EXAMPLE APPLICATIONS -->
-			<section>
+			<section data-reveal="up">
 				<h2>Example Applications</h2>
 
 				<!-- Website header example -->
@@ -663,7 +829,7 @@
 							>
 								Reliable, nature‑focused care for your dog.
 							</p>
-							<button class="btn-primary">Book a Meet &amp; Greet</button>
+							<button class="btn-primary" data-magnetic data-boop="#f4c95d,#5a7d3d,#ffffff">Book a Meet &amp; Greet</button>
 						</div>
 					</div>
 				</div>
