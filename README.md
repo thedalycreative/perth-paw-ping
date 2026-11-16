@@ -1,4 +1,50 @@
-# Perth Paws
+# Perth Paw Ping
+
+> Landing pages and brand kit for two Perth pet brands — PawPing smart QR pet tags and Pawfection dog services.
+
+**Live demo:** [perth-paw-ping.vercel.app](https://perth-paw-ping.vercel.app)
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square)
+
+## Features
+
+- **PawPing** landing page: hero with animated phone + live map, features, products, how-it-works, partners and reviews
+- **Pawfection** page for a partner dog-services business
+- **Brand kit** (`/styleguide`): logo, colour, type and voice guidelines
+- Custom motion layer: page curtain, word reveals, tilt cards, paw-print cursor trail, back-to-top ring
+- Responsive, with reduced-motion support and WebP images with PNG fallbacks
+
+## Tech stack
+
+- Plain HTML, CSS and vanilla JavaScript — nothing to install or build
+- `assets/motion.css` + `assets/motion.js` for animation
+- Vercel (`vercel.json`: clean URLs, caching and security headers)
+
+## Run it locally
+
+```bash
+git clone https://github.com/thedalycreative/perth-paw-ping.git
+cd perth-paw-ping
+npx serve .        # or: python3 -m http.server 8000
+```
+
+## Deployment (Vercel)
+
+Static site — no build step. The Vercel project **perth-paw-ping** is linked to this repo and deploys `main` to production at **https://perth-paw-ping.vercel.app** (custom domain: **perthpaws.xyz**).
+
+## Screenshots
+
+![Perth Paw Ping demo](docs/screenshots/demo.gif)
+
+<p align="center">
+  <img src="docs/screenshots/desktop.jpg" alt="PawPing landing page" width="560">
+  <img src="docs/screenshots/pawfection.jpg" alt="Pawfection dog services page" width="560">
+  <img src="docs/screenshots/mobile.jpg" alt="PawPing on a phone" width="260">
+</p>
+
+_Captured from the live site (https://perth-paw-ping.vercel.app). Regenerate with any headless browser; files live in `docs/screenshots/`._
+
+---
 
 A small static website for two Perth pet brands, plus the brand kit behind them:
 
@@ -115,3 +161,7 @@ The site deploys to Vercel as a static site, with no build command and the repos
 - Swap the Tailwind CDN script for a compiled stylesheet (Tailwind CLI) to remove the runtime and the console warning.
 - Replace placeholder contact details (`0400 000 000`, social links set to `#`) with real ones.
 - Fill in `[Brand Name]` in the brand kit once the dog services name is final.
+
+---
+
+Built by [The Daly Creative](https://www.thedalycreative.com) · Perth, WA
