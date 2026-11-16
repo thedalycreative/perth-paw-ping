@@ -1,6 +1,6 @@
 # Perth Paw Ping
 
-> Landing pages and brand kit for two Perth pet brands — PawPing smart QR pet tags and Pawfection dog services.
+> Landing page and brand kit for PawPing — smart QR pet tags that work with Apple Find My. Partner site: [Pawfection](https://perth-pawfection.vercel.app) ([repo](https://github.com/thedalycreative/perth-pawfection)).
 
 **Live demo:** [perth-paw-ping.vercel.app](https://perth-paw-ping.vercel.app)
 
@@ -9,7 +9,7 @@
 ## Features
 
 - **PawPing** landing page: hero with animated phone + live map, features, products, how-it-works, partners and reviews
-- **Pawfection** page for a partner dog-services business
+- **Partners** section linking to the separate [Pawfection](https://perth-pawfection.vercel.app) dog-services site (and `/pawfection` redirects there)
 - **Brand kit** (`/styleguide`): logo, colour, type and voice guidelines
 - Custom motion layer: page curtain, word reveals, tilt cards, paw-print cursor trail, back-to-top ring
 - Responsive, with reduced-motion support and WebP images with PNG fallbacks
@@ -38,7 +38,6 @@ Static site — no build step. The Vercel project **perth-paw-ping** is linked t
 
 <p align="center">
   <img src="docs/screenshots/desktop.jpg" alt="PawPing landing page" width="560">
-  <img src="docs/screenshots/pawfection.jpg" alt="Pawfection dog services page" width="560">
   <img src="docs/screenshots/mobile.jpg" alt="PawPing on a phone" width="260">
 </p>
 
@@ -46,12 +45,12 @@ _Captured from the live site (https://perth-paw-ping.vercel.app). Regenerate wit
 
 ---
 
-A small static website for two Perth pet brands, plus the brand kit behind them:
+A small static website for PawPing, plus the brand kit shared with its partner site Pawfection:
 
 | Page | What it is | Live path |
 | --- | --- | --- |
 | `index.html` | **PawPing**: landing page for personalised QR pet tags with Apple Find My tracking | `/` |
-| `pawfection.html` | **Pawfection**: George Andrew's dog services in Fremantle (a PawPing partner) | `/pawfection` |
+| — | **Pawfection** moved to its own repo: [perth-pawfection](https://github.com/thedalycreative/perth-pawfection) · [perth-pawfection.vercel.app](https://perth-pawfection.vercel.app) | `/pawfection` redirects |
 | `styleguide.html` | **Brand kit**: logo, colour, type and voice guidelines | `/styleguide` |
 
 It's plain HTML, CSS and JavaScript, so there's nothing to install or build. Open any `.html` file in a browser, or deploy the folder as-is.
@@ -61,13 +60,12 @@ It's plain HTML, CSS and JavaScript, so there's nothing to install or build. Ope
 ## Folder structure
 
 ```
-perth-paws/
+perth-paw-ping/
 ├── index.html          PawPing landing page
-├── pawfection.html     Pawfection dog services page
 ├── styleguide.html     Brand kit / style guide
 ├── assets/
-│   ├── motion.css      Shared animation styles (all three pages)
-│   └── motion.js       Shared animation behaviour (all three pages)
+│   ├── motion.css      Shared animation styles 
+│   └── motion.js       Shared animation behaviour 
 ├── images/
 │   ├── *.webp          Optimised images used by the pages
 │   ├── *.png           Original full-size artwork (kept as source files)
@@ -80,16 +78,14 @@ perth-paws/
 
 ### How each page is built
 
-- **Styling**: `index.html` and `pawfection.html` use [Tailwind CSS via the CDN script](https://tailwindcss.com/docs/installation/play-cdn). Each page sets its own brand colours and fonts in the `<head>` (`tailwind.config` on PawPing, CSS variables on Pawfection). `styleguide.html` uses hand-written CSS with CSS variables (`--green`, `--sand`, `--wood`, `--ocean`, `--sun`, `--bg`).
+- **Styling**: `index.html` uses [Tailwind CSS via the CDN script](https://tailwindcss.com/docs/installation/play-cdn). Brand colours and fonts are set in the `<head>` (`tailwind.config`). `styleguide.html` uses hand-written CSS with CSS variables (`--green`, `--sand`, `--wood`, `--ocean`, `--sun`, `--bg`).
 - **Page-specific CSS** lives in a `<style>` block in each page's `<head>`. **Page-specific JS** (mobile menus, navbar background on scroll) is in a `<script>` block at the end of each page's `<body>`.
 - **Shared animation** comes from `assets/motion.css` and `assets/motion.js`, linked from every page's `<head>` (see below).
-- **Icons**: PawPing uses inline SVGs. Pawfection uses [Bootstrap Icons](https://icons.getbootstrap.com/), [Lordicon](https://lordicon.com/) animated icons, and an inline SVG `<symbol id="paw">` that's reused with `<use href="#paw">`.
+- **Icons**: inline SVGs.
 
 ### Page sections
 
 **PawPing (`index.html`)**: nav (with mobile drawer), hero with phone mock-up, scrolling "paw band", stats (count-up), features, products, how it works, testimonials, pricing, partners (links to Pawfection), contact, footer. Each section starts with a comment block describing it.
-
-**Pawfection (`pawfection.html`)**: nav, hero, services marquee, services (7 cards + a booking card), shop, Meet George (photo collage), contact (email and phone), footer.
 
 **Brand kit (`styleguide.html`)**: logo system, colour palette (click a swatch to copy its hex), typography, personality and voice, and example applications.
 
@@ -151,7 +147,7 @@ python3 -m http.server 8000
 
 The site deploys to Vercel as a static site, with no build command and the repository root as the output directory.
 
-- `vercel.json` turns on **clean URLs** (`/pawfection` instead of `/pawfection.html`), caches `images/` for 30 days and `assets/` for an hour, and adds basic security headers.
+- `vercel.json` turns on **clean URLs** (`/styleguide` instead of `/styleguide.html`), redirects `/pawfection` to https://perth-pawfection.vercel.app, caches `images/` for 30 days and `assets/` for an hour, and adds basic security headers.
 - With the GitHub repo connected to the Vercel project, every pull request gets a preview URL and merging to `main` deploys to production.
 
 ---

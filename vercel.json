@@ -5,18 +5,46 @@
 	"headers": [
 		{
 			"source": "/images/(.*)",
-			"headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }]
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=2592000, stale-while-revalidate=86400"
+				}
+			]
 		},
 		{
 			"source": "/assets/(.*)",
-			"headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" }]
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=3600, stale-while-revalidate=86400"
+				}
+			]
 		},
 		{
 			"source": "/(.*)",
 			"headers": [
-				{ "key": "X-Content-Type-Options", "value": "nosniff" },
-				{ "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+				{
+					"key": "X-Content-Type-Options",
+					"value": "nosniff"
+				},
+				{
+					"key": "Referrer-Policy",
+					"value": "strict-origin-when-cross-origin"
+				}
 			]
+		}
+	],
+	"redirects": [
+		{
+			"source": "/pawfection",
+			"destination": "https://perth-pawfection.vercel.app",
+			"permanent": true
+		},
+		{
+			"source": "/pawfection.html",
+			"destination": "https://perth-pawfection.vercel.app",
+			"permanent": true
 		}
 	]
 }
